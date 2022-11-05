@@ -26,7 +26,28 @@ let totalSum = 0;
 const Menu = () => {
   const [order, setOrder] = useState<OrderProps[]>([]);
 
-  // const [showOrder, setShowOrder] = useState(false)
+  let orderList: React.ReactNode = null;
+
+  if (order.length === 0) {
+    orderList = (
+      <div>
+        <p>Order is empty!</p>
+        <p>Please add some items!</p>
+      </div>
+    )
+  } else {
+    orderList = (
+      order.map(item => {
+        return (
+          <OrderItem key={item.name + 1}
+                     name={item.name}
+                     price={item.price}
+                     count={item.count}
+                     del={() => deleteElement(item.name)}/>
+        )
+      })
+    )
+  }
 
   const addElement = (name: string) => {
     const orderCopy = [...order]
@@ -50,7 +71,7 @@ const Menu = () => {
     const orderCopy = [...order]
     const elementForDeletionIndex = orderCopy.findIndex(item => item.name === name)!
     const elementInfo = orderCopy.find(item => item.name === name)!
-    orderCopy.splice(elementForDeletionIndex,1)
+    orderCopy.splice(elementForDeletionIndex, 1)
     for (const component of order) {
       if (component.name === elementInfo.name) {
         totalSum -= component.price;
@@ -63,18 +84,16 @@ const Menu = () => {
   return (
     <div className="menu-container">
       <div className="order-container">
-        {/*{orderList}*/}
-        {order.map(item => {
-          return (
-            <OrderItem key={item.name + 1} name={item.name} price={item.price} count={item.count} del={() => deleteElement(item.name)}/>
-          )})}
-        <OrderTotalPrice totalPrice={totalSum}></OrderTotalPrice>
+        {orderList}
+        {(order.length > 0) ? <OrderTotalPrice totalPrice={totalSum}/> : null}
       </div>
       <div className="menu-items-container">
         {ELEMENTS.map(element => {
           return (
-            <MenuItem key={element.name} name={element.name} price={element.price} onDivClick={() => addElement(element.name)} img={element.image}/>
-          )})}
+            <MenuItem key={element.name} name={element.name} price={element.price}
+                      onDivClick={() => addElement(element.name)} img={element.image}/>
+          )
+        })}
       </div>
     </div>
   );
