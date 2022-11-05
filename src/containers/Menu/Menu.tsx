@@ -24,16 +24,13 @@ interface OrderProps {
 let totalSum = 0;
 
 const Menu = () => {
-  const [order, setOrder] = useState<OrderProps[]>([
-    {name: "Banana", price: 10, count: 10}
-  ]);
+  const [order, setOrder] = useState<OrderProps[]>([]);
 
   // const [showOrder, setShowOrder] = useState(false)
 
   const addElement = (name: string) => {
     const orderCopy = [...order]
     const elementInfo = ELEMENTS.find(item => item.name === name)!
-
     const newComponent: OrderProps = {name: elementInfo.name, price: elementInfo.price, count: 1};
     for (const component of order) {
       if (component.name === newComponent.name) {
@@ -49,15 +46,19 @@ const Menu = () => {
     setOrder(orderCopy)
   }
 
-  // const addElement = () => {
-  //   setShowOrder(!showOrder)
-  // }
-
-  // let orderList: React.ReactNode = null;
-  //
-  // if (showOrder) {
-  //   orderList = (<OrderItem name={'Hamburger'} count={70} price={100} del={() => {}}/>)
-  // }
+  const deleteElement = (name: string) => {
+    const orderCopy = [...order]
+    const elementForDeletionIndex = orderCopy.findIndex(item => item.name === name)!
+    const elementInfo = orderCopy.find(item => item.name === name)!
+    orderCopy.splice(elementForDeletionIndex,1)
+    for (const component of order) {
+      if (component.name === elementInfo.name) {
+        totalSum -= component.price;
+        setOrder(orderCopy)
+      }
+    }
+    setOrder(orderCopy)
+  }
 
   return (
     <div className="menu-container">
@@ -65,23 +66,15 @@ const Menu = () => {
         {/*{orderList}*/}
         {order.map(item => {
           return (
-            <OrderItem key={item.name + 1} name={item.name} price={item.price} count={item.count} del={() => {}}/>
+            <OrderItem key={item.name + 1} name={item.name} price={item.price} count={item.count} del={() => deleteElement(item.name)}/>
           )})}
         <OrderTotalPrice totalPrice={totalSum}></OrderTotalPrice>
-        {/*<OrderItem name={'Hamburger'} count={70} price={100} del={() => {}}/>*/}
       </div>
       <div className="menu-items-container">
         {ELEMENTS.map(element => {
           return (
             <MenuItem key={element.name} name={element.name} price={element.price} onDivClick={() => addElement(element.name)} img={element.image}/>
           )})}
-
-        {/*<MenuItem name={'Hamburger'} price={80} onDivClick={() => {}}/>*/}
-        {/*<MenuItem name={'Cheeseburger'} price={80} onDivClick={() => {}}/>*/}
-        {/*<MenuItem name={'Fries'} price={80} onDivClick={() => {}}/>*/}
-        {/*<MenuItem name={'Coffee'} price={80} onDivClick={() => {}}/>*/}
-        {/*<MenuItem name={'Tea'} price={80} onDivClick={() => {}}/>*/}
-        {/*<MenuItem name={'Cola'} price={80} onDivClick={() => {}}/>*/}
       </div>
     </div>
   );
