@@ -1,0 +1,19 @@
+.menu-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.menu-items-container {
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    width: 850px;
+}
+
+.order-container {
+    border: 1px solid black;
+    padding: 10px 20px;
+    width: 400px;
+}

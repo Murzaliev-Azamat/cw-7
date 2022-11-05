@@ -1,0 +1,9 @@
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 25px 10px 25px;
+    margin: 10px;
+}
